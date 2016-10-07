@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+#json_sources 
+{
+    position: fixed;
+
+    top: 52px;
+
+    right: 850px;
+}
+
+<svg width="100" height="100">
+<circle cx="25" cy="25" r="25" />
+</svg>
+
+</style>
+<select id="json_sources" name="json_sources">
+</select>
+<body>
+    <script src="js/d3.min.js"></script>
+    <script>
+        var svg;
+        var node;
+        var r = 6, fill = d3.scale.category20();
+
+        
+        d3.json("groups.json", function (json) {
+
+            for (var grouplen = 0; grouplen < json.groupnames.length; grouplen++) {
+
+                var group = json.groupnames[grouplen];
+                if (grouplen == 0) {
+                    addOption(json_sources, group.name, group.value, true);
+                    change();
+                }
+                else {
+                    addOption(json_sources, group.name, group.value, false);
+                }
+            }
+
+        })
+
+        var dropdown = d3.select("#json_sources")
+        var change = function () {
+
+            var width = 1500, height = 1200;
+
+            var color = d3.scale.category20();
+
+            var force = d3.layout.force()
+            .charge(-120)
+            .linkDistance(function (d) { return d.length * 100; })
+            .size([width, height]);
+
+            //Clear screen
+            d3.select("svg").remove();
+
+            svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("pointer-events", "all")
+            .append('svg:g')
+            .call(d3.behavior.zoom().on("zoom", redraw))
+            .append('svg:g');
+
+            svg.append('svg:rect')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('fill', 'white');
+
+
+            var source = dropdown.node().options[dropdown.node().selectedIndex].value;
+
+            d3.json(source, function (error, graph) {
+            force
+            .nodes(graph.nodes)
+            .links(graph.links)
+            .start();
+            
+            var link = svg.selectAll(".link")
+            .data(graph.links)
+            .enter().append("line")
+            .attr("class", "link")
+            .style("stroke-width", function (d) { return Math.sqrt(d.value); });
+
+            node = svg.selectAll(".node").data(graph.nodes).enter().append("circle").attr("r", r - .75).style("fill", function (d) {
+                return d3.rgb(d.group);
+            }).style("stroke", function (d) {
+                return d3.rgb(d.group).darker();
+            }).call(force.drag).on("mouseover", fade(.1)).on("mouseout", fade(1));
+            
+            node.append("title")
+            .text(function (d) { return d.name; });
+
+            var linkedByIndex = {};
+            graph.links.forEach(function (d) {
+                linkedByIndex[d.source.index + "," + d.target.index] = 1;
+            });
+
+            function isConnected(a, b) {
+                return linkedByIndex[a.index + "," + b.index] || linkedByIndex[b.index + "," + a.index] || a.index == b.index;
+            }
+
+            force.on("tick", function () {
+
+                node.attr("cx", function (d) {
+                    return d.x = Math.max(r, Math.min(width - r, d.x));
+                }).attr("cy", function (d) {
+                    return d.y = Math.max(r, Math.min(height - r, d.y));
+                });
+
+                link.attr("x1", function (d) {
+                    return d.source.x;
+                }).attr("y1", function (d) {
+                    return d.source.y;
+                }).attr("x2", function (d) {
+                    return d.target.x;
+                }).attr("y2", function (d) {
+                    return d.target.y;
+                });
+
+            });
+
+            function fade(opacity) {
+                return function (d) {
+                    node.style("stroke-opacity", function (o) {
+                        thisOpacity = isConnected(d, o) ? 1 : opacity;
+                        this.setAttribute('fill-opacity', thisOpacity);
+                        return thisOpacity;
+                    });
+
+                    link.style("stroke-opacity", function (o) {
+                        return o.source === d || o.target === d ? 1 : opacity;
+                    });
+                };
+            }
+
+
+
+            });
+
+        }
+
+        dropdown.on("change", change)
+        change(); //trigger json on load
+
+        function addOption(selectbox, text, value, selectStatus) {
+            var optn = document.createElement("OPTION");
+            optn.text = text;
+            optn.value = value;
+            optn.selected = selectStatus;
+            selectbox.options.add(optn);
+        }
+
+        function mouseover() {
+            d3.select(this).select("circle").transition()
+            .duration(750)
+            .attr("r", 100);
+        }
+
+        function mouseout() {
+            d3.select(this).select("circle").transition()
+            .duration(750)
+            .attr("r", 5);
+        }
+
+        function redraw() {
+            console.log("here", d3.event.translate, d3.event.scale);
+            svg.attr("transform",
+            "translate(" + d3.event.translate + ")"
+            + " scale(" + d3.event.scale + ")");
+        }
+
+    </script>

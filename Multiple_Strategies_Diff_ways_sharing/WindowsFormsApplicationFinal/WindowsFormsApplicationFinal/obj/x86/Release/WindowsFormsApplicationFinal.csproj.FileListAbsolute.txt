@@ -1,0 +1,11 @@
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.Form1.resources
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.Form2.resources
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.Properties.Resources.resources
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\bin\Release\WindowsFormsApplicationFinal.exe
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\bin\Release\WindowsFormsApplicationFinal.pdb
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\bin\Release\Newtonsoft.Json.dll
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\bin\Release\Newtonsoft.Json.xml
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.exe
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.pdb
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.csproj.GenerateResource.Cache
+C:\Users\Karthik\Downloads\Project\Project\WindowsFormsApplicationFinal\WindowsFormsApplicationFinal\obj\x86\Release\WindowsFormsApplicationFinal.csprojResolveAssemblyReference.cache
